@@ -1,0 +1,54 @@
+{
+    "steps": {
+      ":original": {
+        "robot": "/upload/handle"
+      },
+      "imported_image": {
+        "robot": "/http/import",
+        "url": "https://i.discogs.com/O8w9lwzZUogxAfBo5O-wP3RZ_Vm3A0X7sPx6bHyL7Ic/rs:fit/g:sm/q:90/h:600/w:597/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTEzNDk4/NzQtMTQ4OTcyNDIy/Mi04MjUyLmpwZWc.jpeg"
+      },
+      "resized_image": {
+        "use": "imported_image",
+        "robot": "/image/resize",
+        "result": true,
+        "width": 600,
+        "height": 600,
+        "zoom": false,
+        "resize_strategy": "fillcrop",
+        "imagemagick_stack": "v2.0.7"
+      },
+      "merged": {
+        "robot": "/video/merge",
+        "use": {
+          "steps": [
+            {
+              "name": ":original",
+              "as": "audio"
+            },
+            {
+              "name": "resized_image",
+              "as": "image"
+            }
+          ]
+        },
+        "result": true,
+        "ffmpeg_stack": "v4.3.1",
+        "preset": "ipad-high"
+      },
+      "exported": {
+        "use": [
+          "imported_image",
+          "resized_image",
+          "merged",
+          ":original"
+        ],
+        "robot": "/youtube/store",
+        "credentials": "my_youtube_credentials",
+        "title": "Some title",
+        "description": "Some description",
+        "category": "Music",
+        "keywords": "testing, example",
+        "visibility": "public"
+      }
+    }
+  }
